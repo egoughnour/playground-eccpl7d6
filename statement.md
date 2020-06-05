@@ -4,7 +4,28 @@ This Python template lets you get started quickly with a simple one-page playgro
 
 ```python runnable
 from PIL import Image, ImageDraw
-from mandelbrot import mandelbrot, MAX_ITER
+
+MAX_ITER = 80
+
+EPSILON = 0.001
+   
+def cubicbrot(c):
+    z = c
+    n = 0
+    while (abs(z) <= 2 or abs(z-1) <= 2 or abs(z+1) <= 2) and n < MAX_ITER:
+        f = (z*z*z)-z
+        p = 3*z*z-1
+        if abs(p) <= EPSILON:
+            return MAX_ITER
+        z = z - (f/p)
+        if abs(z) <= EPSILON:
+            return n
+        if abs(z-1) <= EPSILON:
+            return n
+        if abs(z+1) <= EPSILON:
+            return n
+        n += 1
+    return n
 
 # Image size (pixels)
 WIDTH = 600
@@ -34,6 +55,7 @@ for x in range(0, WIDTH):
         draw.point([x, y], (color, color, color))
 
 im.save('output.png', 'PNG')
+
 ```
 
 # Advanced usage
